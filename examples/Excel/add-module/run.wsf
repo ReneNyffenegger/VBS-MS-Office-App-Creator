@@ -1,0 +1,46 @@
+<job> <script language="VBScript" src="..\..\..\create-MS-Office-app.vbs" />
+
+ <script language="VBScript">
+
+   option explicit
+
+   dim wshShell
+   set wshShell = createObject("WScript.Shell")
+
+   if wscript.arguments.count <> 1 then
+      wscript.echo("Specify version of file to be inserted (1 or 2)")
+      wscript.quit
+   end if
+
+   dim sourceVersion
+   sourceVersion = wscript.arguments(0)
+
+   if sourceVersion <> "1" and sourceVersion <> "2" then
+      wscript.echo("Specify version of file to be inserted (1 or 2)")
+      wscript.quit
+   end if
+
+   dim xls
+   dim app
+
+   dim xlsFileName
+   xlsFileName = currentDir() & "created.xlsm"
+
+   if sourceVersion = 1 then
+       set xls = createOfficeApp("excel", xlsFileName)
+       set app=xls.application
+   else
+       set app = createObject("excel.application")
+       set xls = app.workBooks.open(xlsFileName)
+   end if
+
+   app.visible = true
+
+   call insertModule(app, currentDir() & "functions-v" & sourceVersion & ".bas", "func", 1)
+
+   app.run "main"
+
+   xls.save
+
+ </script>
+</job>

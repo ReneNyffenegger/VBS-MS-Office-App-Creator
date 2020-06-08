@@ -1,0 +1,21 @@
+<job>
+<script language="VBScript" src="..\..\..\create-MS-Office-app.vbs" />
+<script language="VBScript">
+
+   option explicit
+
+   dim wshShell
+   set wshShell = createObject("WScript.Shell")
+
+   dim app
+   dim xls
+   set xls = createOfficeApp("excel", currentDir() & "created.xlsm")
+   set app = xls.application
+
+   call replaceThisWorksheetModule(app, currentDir() & "thisWorkbook.bas")
+
+   xls.save
+
+   wscript.echo("The end")
+
+</script> </job>

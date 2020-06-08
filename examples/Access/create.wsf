@@ -1,0 +1,34 @@
+<job>
+<script language="VBScript" src="..\..\create-MS-Office-app.vbs" />
+
+<script language="VBScript">
+
+   option explicit
+
+   dim wshShell
+   set wshShell = createObject("WScript.Shell")
+
+
+   dim app
+   set app = createOfficeApp("access", currentDir() & "created.accdb")
+
+   '
+   '  Insert a module. The 3rd parameter (1) indicates a «normal» module (vbext_ct_StdModule).
+   ' (2, = vbext_ct_ClassModule, inserts a class).
+   '
+   call insertModule(app, currentDir() & "functions.bas", "funcs", 1)
+
+   '
+   '  Run the function main.
+   '
+   app.run "main", currentDir()
+
+   '  Apparently, it not necessary to save an MS-Access «document».
+   '  Therefore, it is commented here:
+   '
+'  app.save
+
+   wscript.echo("The end")
+
+</script>
+</job>

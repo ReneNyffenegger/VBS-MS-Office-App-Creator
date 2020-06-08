@@ -1,0 +1,25 @@
+<job>
+<script language="VBScript" src="..\..\create-MS-Office-app.vbs" />
+<script language="VBScript">
+
+   option explicit
+
+   dim app
+   dim doc
+
+   set doc = createOfficeApp("word", currentDir() & "created.docm")
+   if doc is nothing then ' {
+      wscript.echo("Could not create word document")
+      wscript.quit(-1)
+   end if ' }
+
+   set app = doc.application
+
+   call insertModule(app, currentDir() & "functions.bas", "func", 1)
+
+   call app.run("main", currentDir())
+
+   doc.save
+
+</script>
+</job>

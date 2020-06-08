@@ -1,0 +1,33 @@
+<job>
+<script language="VBScript" src="..\..\..\create-MS-Office-app.vbs" />
+<script language="VBScript">
+
+   option explicit
+
+   dim wshShell
+   set wshShell = createObject("WScript.Shell")
+
+   dim projectRootDir
+       projectRootDir = currentDir()
+
+   wscript.echo("projectRootDir = " & projectRootDir)
+
+   dim app
+   dim xls
+   set xls = createOfficeApp("excel", projectRootDir & "created.xlsm")
+   if xls is nothing then ' {
+      wscript.echo("Could not create excel worksheet.")
+      wscript.exit(-1)
+   end if ' }
+
+   set app = xls.application
+
+   call insertModule(app, projectRootDir & "functions.bas", "funcs", 1)
+
+   call app.run("main", projectRootDir)
+
+   xls.save
+
+   wscript.echo("The end")
+
+</script> </job>
