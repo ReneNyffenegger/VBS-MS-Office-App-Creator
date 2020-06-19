@@ -4,7 +4,7 @@
 '
 ' The functions in this file should be called from a *.wsf file.
 '
-' Version 0.01
+' Version 0.02
 '
 ' See also https://renenyffenegger.ch/notes/Microsoft/Office/VBScript-App-Creator/
 '
@@ -51,7 +51,22 @@ function createOfficeApp(prod, fileName) ' {
          ' createOfficeApp becomes a worksheet here, really...
          '
            set createOfficeApp = app.workBooks.add
-           createOfficeApp.saveAs fileName, 52 ' 52 = xlOpenXMLWorkbookMacroEnabled
+
+         '
+         ' Determine file format value based on extension of filename
+         '
+           dim fileFormat
+           if right(fileName, 5) = ".xlsb" then ' {
+              fileFormat = 50 ' xlExcel12
+           elseif right(fileName, 5) = ".xlsm" then
+              fileFormat = 52 ' xlOpenXMLWorkbookMacroEnabled
+           else
+              wscript.echo fileName & " has a suffix that is not (yet?) supported"
+              set createOfficeApp = nothing
+              exit function
+           end if ' }
+
+           createOfficeApp.saveAs fileName, fileFormat
     ' }
     elseIf prod = "word"   then ' {
            set app             = createObject("word.application")
