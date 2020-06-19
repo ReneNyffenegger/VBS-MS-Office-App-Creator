@@ -12,7 +12,7 @@
    set xls = createOfficeApp("excel", currentDir() & "created.xlsm")
    if xls is nothing then ' {
       wscript.echo("Could not create excel worksheet.")
-      wscript.exit(-1)
+      wscript.quit(-1)
    end if ' }
 
    set app = xls.application
