@@ -4,9 +4,6 @@
 
    option explicit
 
-   dim wshShell
-   set wshShell = createObject("WScript.Shell")
-
    dim app
    dim xls
    set xls = createOfficeApp("excel", currentDir() & "created.xlsm")
