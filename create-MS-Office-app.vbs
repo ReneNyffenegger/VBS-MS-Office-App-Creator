@@ -4,7 +4,7 @@
 '
 ' The functions in this file should be called from a *.wsf file.
 '
-' Version 0.02
+' Version 0.03
 '
 ' See also https://renenyffenegger.ch/notes/Microsoft/Office/VBScript-App-Creator/
 '
@@ -94,6 +94,20 @@ function createOfficeApp(prod, fileName) ' {
   ' Add (type lib) reference to "Microsoft Visual Basic for Applications Extensibility 5.3"
   '
     call addReference(app, "{0002E157-0000-0000-C000-000000000046}", 5, 3)
+
+end function ' }
+
+function openOfficeApp(prod, fileName) ' {
+
+    dim app
+    if prod = "excel" then ' {
+       set app = createObject("excel.application")
+       set openOfficeApp = app.workBooks.open(fileName)
+    else
+       wscript.echo("Todo. implement " & prod & " for openOfficeApp")
+       set openOfficeApp = nothing
+       exit function
+    end if ' }
 
 end function ' }
 

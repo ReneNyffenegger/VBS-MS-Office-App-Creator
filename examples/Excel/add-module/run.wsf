@@ -27,15 +27,19 @@
    xlsFileName = currentDir() & "created.xlsm"
 
    if sourceVersion = 1 then
-       set xls = createOfficeApp("excel", xlsFileName)
-       set app=xls.application
+      set xls = createOfficeApp("excel", xlsFileName)
+      set app=xls.application
    else
-       set app = createObject("excel.application")
-       set xls = app.workBooks.open(xlsFileName)
+      set xls = openOfficeApp("excel", xlsFileName)
+      set app = xls.application
    end if
 
    app.visible = true
 
+ '
+ ' If sourceVersion = 2, insertModule replaces the module named func (because
+ ' it already exists)
+ '
    call insertModule(app, currentDir() & "functions-v" & sourceVersion & ".bas", "func", 1)
 
    app.run "main"
