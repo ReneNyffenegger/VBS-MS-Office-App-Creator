@@ -5,10 +5,6 @@
 
    option explicit
 
-   dim wshShell
-   set wshShell = createObject("WScript.Shell")
-
-
    dim app
    set app = createOfficeApp("access", currentDir() & "created.accdb")
 
