@@ -19,10 +19,9 @@
    '
    app.run "main", currentDir()
 
-   '  Apparently, it not necessary to save an MS-Access «document».
-   '  Therefore, it is commented here:
    '
-'  app.save
+   '  Apparently, it not necessary to save an MS-Access «document».
+   '
 
    wscript.echo("The end")
 
