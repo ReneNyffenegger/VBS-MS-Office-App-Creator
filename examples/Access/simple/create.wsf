@@ -1,5 +1,5 @@
 <job>
-<script language="VBScript" src="..\..\create-MS-Office-app.vbs" />
+<script language="VBScript" src="..\..\..\create-MS-Office-app.vbs" />
 
 <script language="VBScript">
 
