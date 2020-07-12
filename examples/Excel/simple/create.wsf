@@ -22,4 +22,9 @@
 
    wscript.echo("The end")
 
+ '
+ ' Bring created Excel Workbook to the front:
+ '
+   createObject("WScript.Shell").appActivate(app.caption)
+
 </script> </job>
