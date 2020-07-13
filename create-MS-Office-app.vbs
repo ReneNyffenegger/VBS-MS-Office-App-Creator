@@ -1,6 +1,6 @@
 '
-' Provide the functionality to create Access applications from
-' the command line.
+' Provide the functionality to create Excel, Access or Word applications
+' from the command line.
 '
 ' The functions in this file should be called from a *.wsf file.
 '
