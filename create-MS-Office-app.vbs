@@ -4,7 +4,7 @@
 '
 ' The functions in this file should be called from a *.wsf file.
 '
-' Version 0.03
+' Version 0.04
 '
 ' See also https://renenyffenegger.ch/notes/Microsoft/Office/VBScript-App-Creator/
 '
@@ -35,6 +35,9 @@ function createOfficeApp(prod, fileName) ' {
        wscript.echo fileName & " was deleted because it already existed"
     end if ' }
 
+    dim fileSuffix, fileFormat
+    fileSuffix = right(fileName, 5)
+
     dim app
 
     if     prod = "access" then ' {
@@ -55,15 +58,16 @@ function createOfficeApp(prod, fileName) ' {
          '
          ' Determine file format value based on extension of filename
          '
-           dim fileFormat
-           if right(fileName, 5) = ".xlsb" then ' {
-              fileFormat = 50 ' xlExcel12
-           elseif right(fileName, 5) = ".xlsm" then
-              fileFormat = 52 ' xlOpenXMLWorkbookMacroEnabled
+           if     fileSuffix = ".xlsb" then ' {
+                  fileFormat = 50    ' xlExcel12
+
+           elseif fileSuffix = ".xlsm" then
+                  fileFormat = 52    ' xlOpenXMLWorkbookMacroEnabled
+
            else
-              wscript.echo fileName & " has a suffix that is not (yet?) supported"
-              set createOfficeApp = nothing
-              exit function
+                  wscript.echo fileName & " has  suffix that is not (yet?) supported"
+                  set createOfficeApp = nothing
+                  exit function
            end if ' }
 
            createOfficeApp.saveAs fileName, fileFormat
@@ -72,7 +76,29 @@ function createOfficeApp(prod, fileName) ' {
            set app             = createObject("word.application")
 
            set createOfficeApp = app.documents.add
-           createOfficeApp.saveAs fileName, 20 ' 20 = wdFormatFlatXMLMacroEnabled (Open XML file format with macros enabled saved as a single XML file.)
+
+         '
+         ' Determine file format value based on extension of filename
+         '
+           if     fileSuffix = ".docm" then ' {
+'                 fileFormat = 20    ' wdFormatFlatXMLMacroEnabled
+                  fileFormat = 13    ' wdFormatXMLDocumentMacroEnabled
+
+           elseif fileSuffix = ".dotm" then
+'                 fileFormat = 22    ' wdFormatFlatXMLTemplateMacroEnabled
+                  fileFormat = 15    ' wdFormatXMLTemplateMacroEnabled
+           else
+
+                  wscript.echo fileName & " has  suffix that is not (yet?) supported"
+                  set createOfficeApp = nothing
+                  exit function
+           end if ' }
+            
+
+        '
+        '  Note: saveAs2, not saveAs.
+        '
+           createOfficeApp.saveAs2 fileName, fileFormat
 
     end if ' }
 
@@ -92,6 +118,8 @@ function createOfficeApp(prod, fileName) ' {
 
   '
   ' Add (type lib) reference to "Microsoft Visual Basic for Applications Extensibility 5.3"
+  '
+  '      2020-07-13: TODO: is this reference always present in Word documents?
   '
     call addReference(app, "{0002E157-0000-0000-C000-000000000046}", 5, 3)
 
@@ -190,6 +218,15 @@ sub addReference(app, guid, major, minor) ' {
   '
   ' Note: guid probably needs the opening and closing curly paranthesis.
   '
+
+    dim ref
+    for each ref in app.VBE.activeVbProject.references
+        if ref.guid = guid then
+           wscript.echo "guid " & guid & " (" & ref.description & ") was already added"
+           exit sub
+        end if
+    next
+
     call app.VBE.activeVbProject.references.addFromGuid (guid, major, minor)
 end sub ' }
 
