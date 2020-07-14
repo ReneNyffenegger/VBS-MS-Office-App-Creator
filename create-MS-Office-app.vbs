@@ -4,7 +4,7 @@
 '
 ' The functions in this file should be called from a *.wsf file.
 '
-' Version 0.04
+' Version 0.05
 '
 ' See also https://renenyffenegger.ch/notes/Microsoft/Office/VBScript-App-Creator/
 '
@@ -130,7 +130,8 @@ function openOfficeApp(prod, fileName) ' {
     dim app
     if prod = "excel" then ' {
        set app = createObject("excel.application")
-       set openOfficeApp = app.workBooks.open(fileName)
+       dim updateLinks : updateLinks = false
+       set openOfficeApp = app.workBooks.open(fileName, updateLinks)
     else
        wscript.echo("Todo. implement " & prod & " for openOfficeApp")
        set openOfficeApp = nothing
