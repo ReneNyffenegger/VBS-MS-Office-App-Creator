@@ -2,6 +2,6 @@ option explicit
 
 sub main(projectRootDir as string) ' {
 
-    msgBox "main, projectRootDir = " & projectRootDir
+    selection.typeText "projectRootDir = " & projectRootDir
 
 end sub ' }
