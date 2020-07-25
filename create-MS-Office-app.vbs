@@ -4,7 +4,7 @@
 '
 ' The functions in this file should be called from a *.wsf file.
 '
-' Version 0.05
+' Version 0.06
 '
 ' See also https://renenyffenegger.ch/notes/Microsoft/Office/VBScript-App-Creator/
 '
@@ -157,7 +157,6 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
     dim vb_editor ' as vbe
     dim vb_proj   ' as VBProject
     dim vb_comps  ' as VBComponents
-    dim mdl       ' as VBComponent
 
 
     if app.name = "Microsoft Word" then
@@ -195,19 +194,31 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
   ' statement between the following two 'on error …' statements:
   '
     on error resume next
-    set mdl = vb_comps(moduleName)
+    set comp = vb_comps(moduleName)
     on error goto 0
 
-    if not isEmpty(mdl) then
-       vb_comps.remove mdl
+    dim comp      ' as VBComponent
+    dim mdl       ' as codeModule
+
+    if not isEmpty(comp) then
+
+       set mdl = comp.codeModule
+       dim nofLines
+       nofLines = mdl.countOfLines
+       mdl.deleteLines 1, nofLines
+
+    else
+
+       set comp = vb_comps.add(moduleType)
+       set mdl  = comp.codeModule
+
     end if
 
-    set mdl = vb_comps.add(moduleType)
-    mdl.codeModule.addFromFile(ModuleFilePath)
-    mdl.name = moduleName
+    mdl.addFromFile moduleFilePath
+    comp.name = moduleName
 
     if app.name = "Microsoft Access" then
-       app.doCmd.close 5, mdl.name, 1 ' 5=acModule, 1=acSaveYes
+       app.doCmd.close 5, comp.name, 1 ' 5=acModule, 1=acSaveYes
     end if
 
 end sub ' }
@@ -219,7 +230,6 @@ sub addReference(app, guid, major, minor) ' {
   '
   ' Note: guid probably needs the opening and closing curly paranthesis.
   '
-
     dim ref
     for each ref in app.VBE.activeVbProject.references
         if ref.guid = guid then
@@ -243,7 +253,9 @@ sub replaceThisWorksheetModule(app, moduleFilePath) ' {
  '
  '  Set the content of an Excel's ThisWorksheet module
  '
-
+ '  TODO 2020-07-25 / Version 0.06 - This sub could probably call
+ '     insertModule app, moduleFilePath, "thisWorksheet", 1
+ '
     if not fso.fileExists(moduleFilePath) then ' {
        wscript.echo moduleFilePath & " does not exist!"
        wscript.quit
