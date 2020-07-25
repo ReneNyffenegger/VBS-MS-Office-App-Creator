@@ -1,0 +1,21 @@
+<job>
+<script language="VBScript" src="..\..\..\create-MS-Office-app.vbs" />
+<script language="VBScript">
+
+   option explicit
+
+   dim app
+   dim xls
+   set xls = createOfficeApp("excel", currentDir() & "created.xlsm")
+   set app = xls.application
+
+   wscript.echo "xls.sheets(1).name     = " & xls.sheets(1).name
+   wscript.echo "xls.sheets(1).codeName = " & xls.sheets(1).codeName
+
+   insertModule app, currentDir() & "sheet1.bas", xls.sheets(1).codeName, 1
+
+   xls.save
+
+   wscript.echo("The end")
+
+</script> </job>
