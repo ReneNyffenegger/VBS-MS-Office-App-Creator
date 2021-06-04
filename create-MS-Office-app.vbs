@@ -4,7 +4,7 @@
 '
 ' The functions in this file should be called from a *.wsf file.
 '
-' Version 0.06
+' Version 0.07
 '
 ' See also https://renenyffenegger.ch/notes/Microsoft/Office/VBScript-App-Creator/
 '
@@ -93,7 +93,7 @@ function createOfficeApp(prod, fileName) ' {
                   set createOfficeApp = nothing
                   exit function
            end if ' }
-            
+
 
         '
         '  Note: saveAs2, not saveAs.
@@ -158,7 +158,6 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
     dim vb_proj   ' as VBProject
     dim vb_comps  ' as VBComponents
 
-
     if app.name = "Microsoft Word" then
        set vb_proj   = app.activeDocument.vbProject
     else
@@ -179,7 +178,6 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
 
        set vb_proj   = vb_editor.activeVBProject
     end if
-
 
     set vb_comps  = vb_proj.vbComponents
 
@@ -214,7 +212,11 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
 
     end if
 
-    mdl.addFromFile moduleFilePath
+ '
+ '  2021-06-04  0.07  An absolute path is required when
+ '                    calling addFromFile()
+ '
+    mdl.addFromFile fso.getAbsolutePathName(moduleFilePath)
     comp.name = moduleName
 
     if app.name = "Microsoft Access" then
