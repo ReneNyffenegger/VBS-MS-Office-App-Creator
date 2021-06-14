@@ -1,0 +1,30 @@
+<job>
+<script language="VBScript" src="../../../create-MS-Office-app.vbs" />
+<script language="VBScript">
+
+   option explicit
+
+   dim app
+   dim xls
+   set xls = createOfficeApp("excel", currentDir() & "created.xlsm")
+
+   if xls is nothing then ' {
+      wscript.echo("Could not create excel worksheet.")
+      wscript.quit(-1)
+   end if ' }
+
+   set app = xls.application
+
+   insertModule app, currentDir() & "changeCodeName.vb", "init", 1
+   insertModule app, currentDir() & "func.vb"          , "func", 1
+
+   app.run "createSheet"
+
+   xls.save
+   wscript.echo("The end")
+ '
+ ' Bring created Excel Workbook to the front:
+ '
+   createObject("WScript.Shell").appActivate(app.caption)
+
+</script> </job>
