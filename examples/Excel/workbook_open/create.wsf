@@ -9,7 +9,7 @@
    set xls = createOfficeApp("excel", currentDir() & "created.xlsm")
    set app = xls.application
 
-   call replaceThisWorksheetModule(app, currentDir() & "thisWorkbook.bas")
+   call replaceThisWorkbookModule(app, currentDir() & "thisWorkbook.vb")
 
    xls.save
 

@@ -4,7 +4,7 @@
 '
 ' The functions in this file should be called from a *.wsf file.
 '
-' Version 0.07
+' Version 0.8
 '
 ' See also https://renenyffenegger.ch/notes/Microsoft/Office/VBScript-App-Creator/
 '
@@ -213,8 +213,8 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
     end if
 
  '
- '  2021-06-04  0.07  An absolute path is required when
- '                    calling addFromFile()
+ '  2021-06-04  0.7  An absolute path is required when
+ '                   calling addFromFile()
  '
     mdl.addFromFile fso.getAbsolutePathName(moduleFilePath)
     comp.name = moduleName
@@ -251,20 +251,22 @@ function currentDir() ' {
 
 end function ' }
 
-sub replaceThisWorksheetModule(app, moduleFilePath) ' {
+sub replaceThisWorkbookModule(app, moduleFilePath) ' {
  '
  '  Set the content of an Excel's ThisWorksheet module
  '
- '  TODO 2020-07-25 / Version 0.06 - This sub could probably call
- '     insertModule app, moduleFilePath, "thisWorksheet", 1
- '
-    if not fso.fileExists(moduleFilePath) then ' {
-       wscript.echo moduleFilePath & " does not exist!"
-       wscript.quit
-    end if ' }
-
-    dim mdl
-    set mdl = app.vbe.activeVBProject.vbComponents.item(1).codeModule
-    call mdl.addFromFile (moduleFilePath)
+    insertModule app, moduleFilePath, "thisWorkbook", 1
+  
+'
+'   Old Code as of version 0.6:
+'
+'     if not fso.fileExists(moduleFilePath) then ' {
+'        wscript.echo moduleFilePath & " does not exist!"
+'        wscript.quit
+'     end if ' }
+'
+'     dim mdl
+'     set mdl = app.vbe.activeVBProject.vbComponents.item(1).codeModule
+'     call mdl.addFromFile (moduleFilePath)
 
 end sub ' }
