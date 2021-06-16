@@ -1,0 +1,28 @@
+<job>
+<script language="VBScript" src="../../create-MS-Office-App.vbs" />
+<script language="VBScript">
+   option explicit
+
+   dim app
+   dim xls
+   set xls = createOfficeApp("excel", currentDir() & "test-compilation.xlsm")
+
+   if xls is nothing then ' {
+      wscript.echo("Could not create excel worksheet.")
+      wscript.quit(-1)
+   end if ' }
+
+   set app = xls.application
+
+   insertModule app, currentDir() & "erroneous-module.vb", "errMod"  , 1
+
+   if not compileApp(app) then
+      wscript.echo("! compilation failed !")
+   end if
+
+   xls.save
+
+   wscript.echo("The end")
+   createObject("WScript.Shell").appActivate(app.caption)
+
+</script> </job>

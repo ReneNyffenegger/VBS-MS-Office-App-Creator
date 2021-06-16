@@ -4,7 +4,7 @@
 '
 ' The functions in this file should be called from a *.wsf file.
 '
-' Version 0.8
+' Version 0.9
 '
 ' See also https://renenyffenegger.ch/notes/Microsoft/Office/VBScript-App-Creator/
 '
@@ -213,8 +213,8 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
     end if
 
  '
- '  2021-06-04  0.7  An absolute path is required when
- '                   calling addFromFile()
+ '  2021-06-04  V0.7  An absolute path is required when
+ '                    calling addFromFile()
  '
     mdl.addFromFile fso.getAbsolutePathName(moduleFilePath)
     comp.name = moduleName
@@ -256,7 +256,7 @@ sub replaceThisWorkbookModule(app, moduleFilePath) ' {
  '  Set the content of an Excel's ThisWorksheet module
  '
     insertModule app, moduleFilePath, "thisWorkbook", 1
-  
+
 '
 '   Old Code as of version 0.6:
 '
@@ -270,3 +270,32 @@ sub replaceThisWorkbookModule(app, moduleFilePath) ' {
 '     call mdl.addFromFile (moduleFilePath)
 
 end sub ' }
+
+function compileApp(app) ' {
+
+   dim cmdBar
+   set cmdBar = app.VBE.commandBars
+   dim compile
+   set compile = cmdBar.findControl(1, 578 ) ' 1 = msoControlButton. 578: the ID of the control
+
+'  on error resume next
+   if compile.enabled then
+      compile.execute
+   end if
+
+   if compile.enabled then
+    '
+    ' If compilation was successful, the respective
+    ' button/control is greyed out (or disabled).
+    ' The fact that the button is still enabled tells us
+    ' that the compilation had an error.
+    ' In this case, a message box is open in the
+    ' VB Project window with the error
+    ' description.
+    '
+      compileApp = false
+   else
+      compileApp = true
+   end if
+
+end function ' }
