@@ -4,7 +4,7 @@
 '
 ' The functions in this file should be called from a *.wsf file.
 '
-' Version 0.9
+' Version 0.10
 '
 ' See also https://renenyffenegger.ch/notes/Microsoft/Office/VBScript-App-Creator/
 '
@@ -270,6 +270,14 @@ sub replaceThisWorkbookModule(app, moduleFilePath) ' {
 '     call mdl.addFromFile (moduleFilePath)
 
 end sub ' }
+
+function insertSheet(wb, name, codeName)
+
+    set insertSheet  = wb.sheets.add
+    insertSheet.name = name
+    wb.vbProject.vbComponents(insertSheet.codeName).name = codeName
+
+end function
 
 function compileApp(app) ' {
 
