@@ -4,7 +4,7 @@
 '
 ' The functions in this file should be called from a *.wsf file.
 '
-' Version 0.10
+' Version 0.11
 '
 ' See also https://renenyffenegger.ch/notes/Microsoft/Office/VBScript-App-Creator/
 '
@@ -192,10 +192,10 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
   ' statement between the following two 'on error …' statements:
   '
     on error resume next
+    dim comp      ' as VBComponent
     set comp = vb_comps(moduleName)
     on error goto 0
 
-    dim comp      ' as VBComponent
     dim mdl       ' as codeModule
 
     if not isEmpty(comp) then
