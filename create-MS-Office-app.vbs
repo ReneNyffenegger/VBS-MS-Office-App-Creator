@@ -4,7 +4,7 @@
 '
 ' The functions in this file should be called from a *.wsf file.
 '
-' Version 0.11
+' Version 0.12
 '
 ' See also https://renenyffenegger.ch/notes/Microsoft/Office/VBScript-App-Creator/
 '
@@ -222,6 +222,18 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
     if app.name = "Microsoft Access" then
        app.doCmd.close 5, comp.name, 1 ' 5=acModule, 1=acSaveYes
     end if
+
+end sub ' }
+
+sub addFormWithModule(app, formName, modulePath) ' {
+
+   dim frm ' as VBIDE.vbComponent
+   set frm = wb.vbProject.VBComponents.add(3) ' 3 = vbext_ct_msForm
+
+   frm.properties.item("name").value = formName
+
+ ' In spite of the 1, this is actually a 'form module'
+   insertModule app, currentDir() & "frmEnterValues.vb", "frmEnterValues", 1
 
 end sub ' }
 

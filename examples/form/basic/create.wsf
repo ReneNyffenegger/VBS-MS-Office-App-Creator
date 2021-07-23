@@ -1,0 +1,32 @@
+<job>
+<script language="VBScript" src="../../../create-MS-Office-App.vbs" />
+<script language="VBScript">
+
+   option explicit
+
+   dim app
+   dim wb
+   set wb = createOfficeApp("excel", currentDir() & "form-example.xlsm")
+
+   if wb is nothing then ' {
+      wscript.echo("Could not create excel worksheet.")
+      wscript.quit(-1)
+   end if ' }
+
+   set app = wb.application
+
+   insertModule app, currentDir() & "func.vb"          , "func"          , 1
+   insertModule app, currentDir() & "init.vb"          , "init"          , 1
+
+   addFormWithModule app, "frmEnterValues", currentDir() & "frmEnterValues.vb"
+
+   on error resume next
+   app.run "initWorkbook"
+
+   if not compileApp(app) then
+      wscript.echo("! compilation failed !")
+   end if
+
+   wb.save
+
+</script></job>
