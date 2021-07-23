@@ -233,7 +233,7 @@ sub addFormWithModule(app, formName, modulePath) ' {
    frm.properties.item("name").value = formName
 
  ' In spite of the 1, this is actually a 'form module'
-   insertModule app, currentDir() & "frmEnterValues.vb", "frmEnterValues", 1
+   insertModule app, modulePath, formName, 1
 
 end sub ' }
 
