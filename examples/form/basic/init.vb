@@ -51,7 +51,7 @@ public sub initForm() ' {
 
     dim frm  as vbComponent
     dim dsgn as msForms.userForm
-    set frm  = activeWorkbook.VBProject.vbcomponents("frmEnterValues"   )
+    set frm  = activeWorkbook.VBProject.vbcomponents("frmEnterValues")
     set dsgn = frm.designer
 
     frm.properties("Caption"     ) ="Enter values"
