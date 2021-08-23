@@ -179,7 +179,6 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
  '
  '  See also https://renenyffenegger.ch/notes/development/languages/VBA/modules/Common/00_ModuleLoader
  '
-
     if not fso.fileExists(moduleFilePath) then ' {
        wscript.echo moduleFilePath & " does not exist!"
        wscript.quit
@@ -224,7 +223,14 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
  '                    calling addFromFile()
  '
     mdl.addFromFile fso.getAbsolutePathName(moduleFilePath)
+wscript.echo "25"
+    on error resume next
     comp.name = moduleName
+    if err.number <> 0 then ' {
+       wscript.echo moduleName & " cannot be used as a module name!"
+       wscript.quit -1
+    end if ' }
+    on error goto 0
 
     if app.name = "Microsoft Access" then
        app.doCmd.close 5, comp.name, 1 ' 5=acModule, 1=acSaveYes
