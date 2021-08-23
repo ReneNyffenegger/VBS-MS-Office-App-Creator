@@ -12,7 +12,7 @@
    '  Insert a module. The 3rd parameter (1) indicates a «normal» module (vbext_ct_StdModule).
    ' (2, = vbext_ct_ClassModule, inserts a class).
    '
-   call insertModule(app, currentDir() & "functions.bas", "funcs", 1)
+   insertModule app, currentDir() & "functions.bas", "funcs", 1
 
    '
    '  Run the function main.
@@ -23,7 +23,7 @@
    '  Apparently, it not necessary to save an MS-Access «document».
    '
 
-   wscript.echo("The end")
+   wscript.echo "The end"
 
 </script>
 </job>

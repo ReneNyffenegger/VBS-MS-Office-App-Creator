@@ -4,7 +4,7 @@
 '
 ' The functions in this file should be called from a *.wsf file.
 '
-' Version 0.12
+' Version 0.13
 '
 ' See also https://renenyffenegger.ch/notes/Microsoft/Office/VBScript-App-Creator/
 '
@@ -140,19 +140,7 @@ function openOfficeApp(prod, fileName) ' {
 
 end function ' }
 
-sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
- '
- '  moduleType:
- '    1 = vbext_ct_StdModule
- '    2 = vbext_ct_ClassModule
- '
- '  See also https://renenyffenegger.ch/notes/development/languages/VBA/modules/Common/00_ModuleLoader
- '
-
-    if not fso.fileExists(moduleFilePath) then ' {
-       wscript.echo moduleFilePath & " does not exist!"
-       wscript.quit
-    end if ' }
+function vb_components(app) ' {
 
     dim vb_editor ' as vbe
     dim vb_proj   ' as VBProject
@@ -179,7 +167,26 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
        set vb_proj   = vb_editor.activeVBProject
     end if
 
-    set vb_comps  = vb_proj.vbComponents
+    set vb_components = vb_proj.vbComponents
+
+end function ' }
+
+sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
+ '
+ '  moduleType:
+ '    1 = vbext_ct_StdModule
+ '    2 = vbext_ct_ClassModule
+ '
+ '  See also https://renenyffenegger.ch/notes/development/languages/VBA/modules/Common/00_ModuleLoader
+ '
+
+    if not fso.fileExists(moduleFilePath) then ' {
+       wscript.echo moduleFilePath & " does not exist!"
+       wscript.quit
+    end if ' }
+
+    dim vb_comps  ' as VBComponents
+    set vb_comps  = vb_components(app)
 
   '
   ' Check if a module by the given name already exists.
@@ -225,7 +232,15 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
 
 end sub ' }
 
+sub importVBAFile(app, filename) ' {
+    vb_components(app).import filename
+end sub ' }
+
 sub addFormWithModule(app, formName, modulePath) ' {
+ '
+ ' 2021-08-23: is this sub still used.
+ ' wb is an unreferenced variable in here.
+ '
 
    dim frm ' as VBIDE.vbComponent
    set frm = wb.vbProject.VBComponents.add(3) ' 3 = vbext_ct_msForm
@@ -283,13 +298,13 @@ sub replaceThisWorkbookModule(app, moduleFilePath) ' {
 
 end sub ' }
 
-function insertSheet(wb, name, codeName)
+function insertSheet(wb, name, codeName) ' {
 
     set insertSheet  = wb.sheets.add
     insertSheet.name = name
     wb.vbProject.vbComponents(insertSheet.codeName).name = codeName
 
-end function
+end function ' }
 
 function compileApp(app) ' {
 

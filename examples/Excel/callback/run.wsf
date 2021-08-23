@@ -27,16 +27,14 @@
 
    set app = xls.application
 
-   call insertModule(app, currentDir() & "functions.bas", "funcs", 1)
+   importVBAFile app, currentDir() & "functions.bas"
 
    dim cb
    set cb = new callBack
-   call app.run("main", cb)
+   app.run "main", cb
 
    xls.save
 
-   wscript.echo("The end")
-
-   createObject("WScript.Shell").appActivate(app.caption)
+   wscript.echo "The end"
 
 </script> </job>
