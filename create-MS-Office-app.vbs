@@ -223,7 +223,6 @@ sub insertModule(app, moduleFilePath, moduleName, moduleType) ' {
  '                    calling addFromFile()
  '
     mdl.addFromFile fso.getAbsolutePathName(moduleFilePath)
-wscript.echo "25"
     on error resume next
     comp.name = moduleName
     if err.number <> 0 then ' {
